@@ -1,11 +1,23 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useReducer, useRef, useState } from 'react';
 import UserInfoContext from '.';
 import './App.css';
+
+const reducer = (state, action) => {
+  switch(action.type) {
+    case 'increment':
+      return state + 1;
+    case 'decrement':
+      return state - 1;
+    default:
+      return state;
+  }
+}
 
 function App() {
   const [count, setCount] = useState(0);
   const userInfo = useContext(UserInfoContext);
   const ref = useRef();
+  const [state, dispatch] = useReducer(reducer, 0);
 
   const handleClick = () => {
     setCount(count + 1);
@@ -45,6 +57,13 @@ function App() {
         <h2>UseRef</h2>
         <input type="text" ref={ref} />
         <button onClick={handleRef}>Check the value on console!</button>
+      </div>
+      <hr />
+      <div>
+        <h2>UseReducer</h2>
+        <p>{state}</p>
+        <button onClick={() => dispatch({type: "increment"})}>+</button>
+        <button onClick={() => dispatch({type: "decrement"})}>-</button>
       </div>
     </div>
   );
